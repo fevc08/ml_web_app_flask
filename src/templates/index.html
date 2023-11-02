@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Red Wine Quality Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #ff5722;
+            color: #fff;
+            padding: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #aaa;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #ff5722;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #e64100;
+        }
+    </style>
+</head>
+<body>
+    <h1>Red Wine Quality Predictor</h1>
+
+    <form action="/predict" method="post">
+        <h2>Enter Wine Attributes:</h2>
+        <p>
+            <label for="fixed_acidity">Fixed Acidity:</label>
+            <input type="text" name="fixed_acidity" id="fixed_acidity">
+        </p>
+        <p>
+            <label for="volatile_acidity">Volatile Acidity:</label>
+            <input type="text" name="volatile_acidity" id="volatile_acidity">
+        </p>
+        <p>
+            <label for="citric_acid">Citric Acid:</label>
+            <input type="text" name="citric_acid" id="citric_acid">
+        </p>
+        <p>
+            <label for="residual_sugar">Residual Sugar:</label>
+            <input type="text" name="residual_sugar" id="residual_sugar">
+        </p>
+        <p>
+            <label for="chlorides">Chlorides:</label>
+            <input type="text" name="chlorides" id="chlorides">
+        </p>
+        <p>
+            <label for="free_sulfur_dioxide">Free Sulfur Dioxide:</label>
+            <input type="text" name="free_sulfur_dioxide" id="free_sulfur_dioxide">
+        </p>
+        <p>
+            <label for="total_sulfur_dioxide">Total Sulfur Dioxide:</label>
+            <input type="text" name="total_sulfur_dioxide" id="total_sulfur_dioxide">
+        </p>
+        <p>
+            <label for="density">Density:</label>
+            <input type="text" name="density" id="density">
+        </p>
+        <p>
+            <label for="pH">pH:</label>
+            <input type="text" name="pH" id="pH">
+        </p>
+        <p>
+            <label for="sulphates">Sulphates:</label>
+            <input type="text" name="sulphates" id="sulphates">
+        </p>
+        <p>
+            <label for="alcohol">Alcohol:</label>
+            <input type="text" name="alcohol" id="alcohol">
+        </p>
+        <p>
+            <input type="submit" value="Predict Wine Quality">
+        </p>
+    </form>
+    <div id="result">
+        <!-- Result will be displayed here -->
+    </div>
+
+    <script>
+        document.getElementById("wine-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const form = new FormData(this);
+            
+            fetch("/predict", {
+                method: "POST",
+                body: form
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("result").innerHTML = `<p>Error: ${data.error}</p>`;
+                } else {
+                    document.getElementById("result").innerHTML = `<p>Predicted Quality: ${data.result}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
