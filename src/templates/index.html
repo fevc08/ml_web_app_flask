@@ -114,29 +114,5 @@
     <div id="result">
         <!-- Result will be displayed here -->
     </div>
-
-    <script>
-        document.getElementById("wine-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            const form = new FormData(this);
-            
-            fetch("/predict", {
-                method: "POST",
-                body: form
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    document.getElementById("result").innerHTML = `<p>Error: ${data.error}</p>`;
-                } else {
-                    document.getElementById("result").innerHTML = `<p>Predicted Quality: ${data.result}</p>`;
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-        });
-    </script>
 </body>
 </html>
